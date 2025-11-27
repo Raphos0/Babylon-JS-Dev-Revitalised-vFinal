@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite --host",
     "build": "tsc && vite build",
-    "preview": "vite preview --host"
+    "preview": "vite preview --host",
+    "village1build": "tsc && vite build village1",
+    "village1preview": "vite preview village1 --host"
   },
   "devDependencies": {
     "typescript": "~5.8.3",
