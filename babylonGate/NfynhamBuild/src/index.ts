@@ -1,8 +1,8 @@
 import { Engine} from "@babylonjs/core";
 import createScene1  from "./scene1/createStartScene";
 import createScene2  from "./scene2/createStartScene";
-import menuScene1 from "./guiMainMenu/guiScene";
-import menuScene2 from "./guiBack/guiScene";
+import menuScene1 from "./scene1/guiMainMenu";
+import menuScene2 from "./scene2/guiBack";
 import "./main.css";
 import {createCharacterController} from "./scene2/createCharacterController";
 import { setupCollisions } from "./scene2/collisions";

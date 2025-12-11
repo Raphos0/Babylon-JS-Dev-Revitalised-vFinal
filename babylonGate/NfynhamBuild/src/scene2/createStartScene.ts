@@ -111,7 +111,7 @@ import {
     return camera;
   }
 
-  function createRedMan(scene: Scene, x: number, y: number, z: number) {
+  function createRedMan(scene: Scene, posx: number, posy: number, posz: number, roty:number) {
     let item: Promise<void | ISceneLoaderAsyncResult> =
     SceneLoader.ImportMeshAsync(
       "",
@@ -122,17 +122,36 @@ import {
 
   item.then((result) => {
     let redMan: AbstractMesh = result!.meshes[0];
-    redMan.position.x = x;
-    redMan.position.y = y; 
-    redMan.position.z = z;
+    redMan.position = new Vector3(posx, posy, posz); // Sets position as defined
     redMan.scaling = new Vector3(1, 1, 1); // Sets scale to 1
-    redMan.rotation = new Vector3(0, 0, 0); // Resets rotation
+    redMan.rotation = new Vector3(0, roty+Math.PI, 0); // Only sets Y rotation to horizontally rotate the object to the defined angle
 
-    //let redManAggregate = new PhysicsAggregate(redMan, PhysicsShapeType.BOX, {mass: 0.2, restitution:0.1, friction:0.4}, scene);
-    //redManAggregate.body.setCollisionCallbackEnabled(true);
+    let redManAggregate = new PhysicsAggregate(redMan, PhysicsShapeType.MESH, {mass: 0}, scene);
+    redManAggregate.body.setCollisionCallbackEnabled(true);
   });
-
     return item;
+  }
+
+  function createRedMen(scene: Scene){
+    createRedMan(scene, -20.29, -0.51, 2.45, Math.PI*0.38);
+    createRedMan(scene, -20.4, -0.51, -2, Math.PI*0.75);
+    createRedMan(scene, -13.92, 1.48, -14.6, Math.PI*0.9);
+    createRedMan(scene, -52.14, 6.7, -21.04, Math.PI*1.5);
+    createRedMan(scene, -44.39, 6.7, -32.56, Math.PI*0.95);
+    createRedMan(scene, -33.81, 6.7, -28.92, Math.PI*0.77);
+    createRedMan(scene, -40.55, 6.7, -58.99, Math.PI*0.83);
+    createRedMan(scene, -38.47, 6.7, -81.21, Math.PI*1.3);
+    createRedMan(scene, -33.68, 6.7, -91.22, Math.PI*0.9);
+    createRedMan(scene, -27.6, 6.7, -116.43, Math.PI*1.18);
+    createRedMan(scene, -10.16, 5.93, -116.33, Math.PI*0.59);
+    createRedMan(scene, -8.44, 5.68, -121.26, Math.PI*1.22);
+    createRedMan(scene, 3, 3.85, -115.1, Math.PI*0.37);
+    createRedMan(scene, -10.55, 3.77, -78.19, Math.PI*0.76);
+    createRedMan(scene, 11.9, 2.52, -75.1, Math.PI*0.25);
+    createRedMan(scene, 10.55, 2.52, -89.6, Math.PI*0.76);
+    createRedMan(scene, 21, 2.52, -116.4, Math.PI*0.77);
+    createRedMan(scene, 37.5, 2.52, -89, Math.PI*0.72);
+    createRedMan(scene, 51.3, 2.52, -82.5, Math.PI*0.59);
   }
 
   function createGround(scene: Scene) {
@@ -201,6 +220,7 @@ import {
     light?: HemisphericLight;
     sky?: Mesh
     camera?: Camera;
+    redmen?: AbstractMesh[];
   }
 
   let that: SceneData = { scene: new Scene(engine) };
@@ -221,7 +241,7 @@ import {
   that.sky = createSky(that.scene);
   that.camera = createArcRotateCamera(that.scene);
   createLampLights(that.scene);
-  createRedMan(that.scene, 2, 6, 2);
+  that.redmen = createRedMen(that.scene);
 
   // creates a player reference for the camera to follow
   const player = await createCharacterController(that.scene);

@@ -221,19 +221,19 @@ export async function createCharacterController(scene: Scene): Promise<{ display
         }
         break;
     }
-    if(KeyboardEventTypes.KEYDOWN && characterMoving)
-    {
-      if (!getAnimating()) {
-        walk();
-        toggleAnimating(); 
-      }
-    }
-    else{
-      if (getAnimating()) {
-        idle();
-        toggleAnimating();
-      }
-    }
+    //if(KeyboardEventTypes.KEYDOWN && characterMoving)
+    //{
+    //  if (!getAnimating()) {
+    //    walk();
+    //    toggleAnimating(); 
+    //  }
+    //}
+    //else{
+    //  if (getAnimating()) {
+    //    idle();
+    //    toggleAnimating();
+    //  }
+    //}
     console.log(keyInput);
   });
 
