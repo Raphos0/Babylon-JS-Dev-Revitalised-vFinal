@@ -31,10 +31,10 @@ const collideCB1 = (collision: {
   //  collision.collider.transformNode.name,
   //  collision.collidedAgainst.transformNode.name
   //);
-  setText(collision.collider.transformNode.name,1);
-  setText(collision.collidedAgainst.transformNode.name,2);
-  setText(collision.point.x.toFixed(2),3)
-  setText(collision.point.z.toFixed(2),4);
+  //setText(collision.collider.transformNode.name,1);
+  //setText(collision.collidedAgainst.transformNode.name,2);
+  //setText(collision.point.x.toFixed(2),3)
+  //setText(collision.point.z.toFixed(2),4);
 
 };
 

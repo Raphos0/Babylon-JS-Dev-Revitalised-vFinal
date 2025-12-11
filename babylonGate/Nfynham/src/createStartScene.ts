@@ -15,10 +15,9 @@ import {
     Camera,
     Engine,
     HavokPlugin,
-    PhysicsCharacterController,
-    Quaternion,
-    CharacterSupportedState,
-    KeyboardEventTypes,
+    SceneLoader,
+    AbstractMesh,
+    ISceneLoaderAsyncResult,
     PhysicsAggregate,
     PhysicsShapeType,
     Light,
@@ -27,49 +26,38 @@ import {
     StandardMaterial,
     Color3,
     Texture,
-    SpecularPowerToRoughness,
+    CubeTexture,
   } from "@babylonjs/core";
     import { taaPixelShader } from "@babylonjs/core/Shaders/taa.fragment";
-
-
-    function createMaterial(scene: Scene, diffuse: Color3, specular: Color3, emissive: Color3, ambient: Color3) {
-      const myMaterial = new StandardMaterial("myMaterial", scene);
-
-      myMaterial.diffuseColor = diffuse;
-      myMaterial.specularColor = specular;
-      myMaterial.emissiveColor = emissive;
-      myMaterial.ambientColor = ambient;
-
-      return myMaterial;
-    }
-
-    function createGroundMaterial(scene: Scene, diffuse: Color3, specular: Color3, emissive: Color3, ambient: Color3) {
-      const myMaterial = new StandardMaterial("myMaterial", scene);
-
-      myMaterial.diffuseColor = diffuse;
-      myMaterial.specularColor = specular;
-      myMaterial.emissiveColor = emissive;
-      myMaterial.ambientColor = ambient;
-      myMaterial.ambientTexture = new Texture("./assets/nature/grass.jpg", scene);
-
-      return myMaterial;
-    }
-
-    function createSceneMaterial(scene: Scene) {
-      scene.ambientColor = new Color3(0, 0, 1);
-    }
   
   function createLight(scene: Scene) {
     const light = new HemisphericLight("light", new Vector3(0, 1, 0), scene);
-    light.intensity = 0.7;
+    light.intensity = 0.05;
+    light.diffuse = new Color3(0.41, 0.47, 0.62);
     return light;
   }
 
-  function createPointLight(scene: Scene) {
-    const pointLight = new PointLight("pointLight", new Vector3(0, 10, 0), scene);
-    pointLight.intensity = 0.7;
-    pointLight.position.y = 8;
+  function createPointLight(scene: Scene, x: number, y: number, z: number) {
+    const pointLight = new PointLight("pointLight", new Vector3(0, 0, 0), scene);
+    pointLight.intensity = 10;
+    pointLight.position.x = x;
+    pointLight.position.y = y;
+    pointLight.position.z = z;
+    pointLight.diffuse = new Color3(0.79, 0.45, 0.2);
     return pointLight;
+  }
+
+  function createLampLights(scene: Scene)
+  {
+    createPointLight(scene, -2.74, 5.5, -5.1);
+    createPointLight(scene, -16.97, 5.5, 5.46);
+    createPointLight(scene, -54.13, 13, -26.31);
+    createPointLight(scene, -34.75, 13, -22.85);
+    createPointLight(scene, -29.57, 13, -94.01);
+    createPointLight(scene, 14.86, 8.8, -73.89);
+    createPointLight(scene, 38.2, 8.8, -93.57);
+    createPointLight(scene, 43.93, 8.8, -81.19);
+    createPointLight(scene, 60.01, 8.8, -85.42);
   }
 
   function createShadowGenerator(light: PointLight, sphere: Mesh ,box: Mesh, nailBlade: Mesh, nailHandle: Mesh, needleBlade: Mesh, needleHandle: Mesh, needleThread: Mesh) {
@@ -87,24 +75,23 @@ import {
     return shadower;
 }
   
-  function createGround(scene: Scene) {
-    let ground = MeshBuilder.CreateGround(
-      "ground",
-      { width: 16, height: 16 },
+  function createSky(scene: Scene) {
+    const skybox = MeshBuilder.CreateBox("skyBox", { size: 300 }, scene);
+    const skyboxMaterial = new StandardMaterial("skyBox", scene);
+    skyboxMaterial.backFaceCulling = false;
+    skyboxMaterial.reflectionTexture = new CubeTexture(
+      "./assets/skybox/DeepDusk",
       scene
     );
+    skyboxMaterial.reflectionTexture.coordinatesMode =
+      Texture.SKYBOX_MODE;
+    skyboxMaterial.diffuseColor = new Color3(0, 0, 0);
+    skyboxMaterial.specularColor = new Color3(0, 0, 0);
+    skybox.material = skyboxMaterial;
 
-    var texture = new StandardMaterial("grass", scene);
-      texture.ambientTexture = new Texture(
-        "./assets/textures/grass.jpg",
-        scene
-      );
-      texture.diffuseColor = new Color3(1, 1, 1);
-      ground.material = texture;
-    
-      // Create a static box shape.
-    let groundAggregate = new PhysicsAggregate(ground, PhysicsShapeType.BOX, { mass: 0 }, scene);
-    return groundAggregate;
+    skybox.position = new Vector3(13.1, 0, -54); // Position skybox at the center of the scene
+
+    return skybox;
   }
   
   function createArcRotateCamera(scene: Scene) {
@@ -124,54 +111,54 @@ import {
     return camera;
   }
 
-  function createBox1(scene: Scene) {
-    let box = MeshBuilder.CreateBox("box", { width: 1, height: 1 }, scene);
-    box.position.x = -1;
-    box.position.y = 3;
-    box.position.z = 1;
+  function createRedMan(scene: Scene, x: number, y: number, z: number) {
+    let item: Promise<void | ISceneLoaderAsyncResult> =
+    SceneLoader.ImportMeshAsync(
+      "",
+      "./assets/hunter/",
+      "RedManBabylonJS.gltf",
+      scene
+    );
 
-    var texture = new StandardMaterial("rock", scene);
+  item.then((result) => {
+    let redMan: AbstractMesh = result!.meshes[0];
+    redMan.position.x = x;
+    redMan.position.y = y; 
+    redMan.position.z = z;
+    redMan.scaling = new Vector3(1, 1, 1); // Sets scale to 1
+    redMan.rotation = new Vector3(0, 0, 0); // Resets rotation
+
+    //let redManAggregate = new PhysicsAggregate(redMan, PhysicsShapeType.BOX, {mass: 0.2, restitution:0.1, friction:0.4}, scene);
+    //redManAggregate.body.setCollisionCallbackEnabled(true);
+  });
+
+    return item;
+  }
+
+  function createGround(scene: Scene) {
+  let ground = MeshBuilder.CreateGround(
+    "ground",
+    { width: 16, height: 16 },
+    scene
+  );
+
+  var texture = new StandardMaterial("grass", scene);
     texture.ambientTexture = new Texture(
-      "./assets/textures/rock.png",
+      "./assets/textures/grass.jpg",
       scene
     );
     texture.diffuseColor = new Color3(1, 1, 1);
-    box.material = texture;
-    let box1Aggregate = new PhysicsAggregate(box, PhysicsShapeType.BOX, {mass: 0.2, restitution:0.1, friction:0.4}, scene);
-    box1Aggregate.body.setCollisionCallbackEnabled(true);
-    return box1Aggregate;
-  }
-
-  function createBox2(scene: Scene) {
-    let box = MeshBuilder.CreateBox("box", { width: 1, height: 1 }, scene);
-    box.position.x = -0.7;
-    box.position.y = 5;
-    box.position.z = 1;
-
-    var texture = new StandardMaterial("rock", scene);
-    texture.ambientTexture = new Texture(
-      "./assets/textures/rock.png",
-      scene
-    );
-    texture.diffuseColor = new Color3(1, 1, 1);
-    box.material = texture;
-    let box2Aggregate = new PhysicsAggregate(box, PhysicsShapeType.BOX, {mass: 0.2, restitution:0.1, friction:0.4}, scene);
-    box2Aggregate.body.setCollisionCallbackEnabled(true);
-    return box2Aggregate;
-  }
+    ground.material = texture;
+  
+    // Create a static box shape.
+  let groundAggregate = new PhysicsAggregate(ground, PhysicsShapeType.BOX, { mass: 0 }, scene);
+  return groundAggregate;
+}
 
   function importAssets(scene: Scene) {
     const assetsManager = new AssetsManager(scene);
 
     // ============================ GAME MAP ============================
-    
-    // Optional: explicit fetch check (logs HTTP status / content-type)
-    fetch("./assets/gameMap/Nfynham.gltf").then(res => {
-      console.log("Nfynham.gltf fetch check:", res.status, res.headers.get("content-type"));
-    }).catch(err => {
-      console.error("Nfynham.gltf fetch error:", err);
-    });
-
     const gameMap = assetsManager.addMeshTask(
       "gameMap task",
       "",
@@ -181,8 +168,8 @@ import {
     
     gameMap.onSuccess = function(task){
       task.loadedMeshes[0].position = new Vector3(0,5,0);
-      task.loadedMeshes[0].scaling = new Vector3(-1,1,-1);
-      task.loadedMeshes[0].rotation = new Vector3(0, -Math.PI/2, 0);
+      task.loadedMeshes[0].scaling = new Vector3(1,1,-1);
+      task.loadedMeshes[0].rotation = new Vector3(0, 0, 0);
 
       // ensures all child meshes are visible, as a failsafe
       task.loadedMeshes.forEach((mesh: any) => {
@@ -191,7 +178,7 @@ import {
 
       // Merge all submeshes into a single mesh to create physics aggregate on whole game map
       task.loadedMeshes.forEach((mesh: any) => {
-        if (mesh instanceof Mesh && mesh.geometry) // checks if "mesh" is a Mesh (if it is constructed from the Mesh class) and if "mesh" contains geometry
+        if (mesh instanceof AbstractMesh && mesh.geometry) // checks if "mesh" is an Abstract Mesh (should include all types of complex meshes) and if "mesh" contains geometry
         {
           const compAggregate = new PhysicsAggregate( // creates a physics aggregate for this component of gameMap
             mesh,
@@ -202,43 +189,8 @@ import {
  
           console.log("Physics aggregate created for", mesh.name);
         }
-        
-        // else, attempts to make a physics aggregate anyways using a BOX shape type
-        else{
-          const compAggregate = new PhysicsAggregate( 
-            mesh,
-            PhysicsShapeType.BOX,
-            { mass: 0 },
-            scene
-          );
-        }
       });
     }
-
-    // ========================= HUNTER ASSET =========================
-
-    // Optional: explicit fetch check (logs HTTP status / content-type)
-    fetch("./assets/hunter/HunterBabylonJS.gltf").then(res => {
-      console.log("HunterBabylonJS.gltf fetch check:", res.status, res.headers.get("content-type"));
-    }).catch(err => {
-      console.error("HunterBabylonJS.gltf fetch error:", err);
-    });
-
-    const hunter = assetsManager.addMeshTask(
-      "hunter task",
-      "",
-      "./assets/hunter/",
-      "HunterBabylonJS.gltf"
-    );
-    hunter.onSuccess = function (task) {
-      task.loadedMeshes[0].position = new Vector3(6, 0, -6);
-      task.loadedMeshes[0].scaling = new Vector3(1, 1, 1);
-      task.loadedMeshes[0].rotation = new Vector3(0, -Math.PI/2, 0);
-    }
-
-    assetsManager.onTaskErrorObservable.add(function (task){
-      console.log("task " + task.name + " failed: " + task.errorObject.message);
-    });
 
     return assetsManager;
   }
@@ -251,6 +203,7 @@ import {
       ground?: PhysicsAggregate;
       box1?: PhysicsAggregate;
       box2?: PhysicsAggregate;
+      sky?: Mesh
       camera?: Camera;
   }
 
@@ -273,6 +226,9 @@ import {
   //that.ground = createGround(that.scene);
   //that.box1 = createBox1(that.scene);
   //that.box2 = createBox2(that.scene);
+  that.sky = createSky(that.scene);
+  createLampLights(that.scene);
+  createRedMan(that.scene, 2, 6, 2);
   that.camera = createArcRotateCamera(that.scene);
 
   // creates a player reference for the camera to follow

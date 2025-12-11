@@ -30,6 +30,7 @@ export interface SceneData {
     shadowGenerator?: ShadowGenerator;
     ground?: PhysicsAggregate;
     camera?: Camera;
+    sky?: Mesh;
     box1?:PhysicsAggregate;
     box2?:PhysicsAggregate;
 }
