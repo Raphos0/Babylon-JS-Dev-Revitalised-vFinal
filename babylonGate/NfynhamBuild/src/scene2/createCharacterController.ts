@@ -5,13 +5,16 @@ import {
   Scene,
   Vector3,
   MeshBuilder,
+  Skeleton,
   PhysicsCharacterController,
   Quaternion,
   CharacterSupportedState,
+  ISceneLoaderAsyncResult,
   KeyboardEventTypes,
   StandardMaterial,
   Color3,
 } from "@babylonjs/core";
+import { bakedAnimations, walk, run, left, right, idle, stopAnimation, getAnimating, toggleAnimating } from "./bakedAnimations";
 
 export async function createCharacterController(scene: Scene): Promise<{ displayCapsule: Mesh; characterController: PhysicsCharacterController }> {
   // Character state machine
@@ -50,26 +53,27 @@ export async function createCharacterController(scene: Scene): Promise<{ display
   );
 
   // imports the player mesh (through "obsolete" means)
-  const result = await SceneLoader.ImportMeshAsync("", "./assets/hunter/", "HunterBabylonJS.gltf", scene);
-  
-  // creates a single transform root to hold all imported meshes
-  const visualRoot = new TransformNode("characterVisualRoot", scene);
-  result.meshes.forEach((m: AbstractMesh) => {
-    
-    // avoid re-parenting the capsule itself if it was included
-    if (m !== displayCapsule) {
-      (m as Mesh).setParent(visualRoot);
-    }
+  let player: Promise<void | ISceneLoaderAsyncResult> = 
+  SceneLoader.ImportMeshAsync(
+    "", 
+    "./assets/hunter/", 
+    "HunterBabylonJS.gltf", 
+    scene
+  );
+
+  player.then((result) => {
+    let hunter: AbstractMesh = result!.meshes[0];
+    hunter.position = Vector3.Zero(); // Sets position to 0
+    hunter.scaling = new Vector3(1, 1, 1); // Sets scale to 1
+    hunter.rotation = Vector3.Zero(); // Resets rotation
+
+    // add baked in animations to player
+    let skeleton: Skeleton = result!.skeletons[0];
+    bakedAnimations(scene, skeleton);
+
+    // parents imported mesh to the display capsule for a visual player model
+    hunter.setParent(displayCapsule);
   });
-
-  // parent the visual root to the capsule so it moves with the physics controller
-  visualRoot.setParent(displayCapsule);
-
-  // reset position and rotation to match parent capsule orientation
-  visualRoot.position = Vector3.Zero();
-  visualRoot.rotation = Vector3.Zero();
-  // If the model's pivot is off, you can center on bounding box:
-  visualRoot.position.y -= 1;
 
   // Compute desired velocity based on input and state
   const getDesiredVelocity = function (
@@ -178,21 +182,26 @@ export async function createCharacterController(scene: Scene): Promise<{ display
   // Keyboard input handler
   scene.onKeyboardObservable.add((kbInfo) => {
     const key = kbInfo.event.key;
-    
+    let characterMoving: Boolean = false;
+
     switch (kbInfo.type) {
       case KeyboardEventTypes.KEYDOWN:
-        if (key === "w" || key === "ArrowUp") {
+        if (key === "s" || key === "ArrowUp") {
           keyInput.z = 1;
-          displayCapsule.rotation.y = (2 * Math.PI) / 2;
-        } else if (key === "s" || key === "ArrowDown") {
-          keyInput.z = -1;
           displayCapsule.rotation.y = (0 * Math.PI) / 2;
-        } else if (key === "a" || key === "ArrowLeft") {
+          characterMoving = true;
+        } else if (key === "w" || key === "ArrowDown") {
+          keyInput.z = -1;
+          displayCapsule.rotation.y = (2 * Math.PI) / 2;
+          characterMoving = true;
+        } else if (key === "d" || key === "ArrowLeft") {
           keyInput.x = -1;
-          displayCapsule.rotation.y = (1 * Math.PI) / 2;
-        } else if (key === "d" || key === "ArrowRight") {
-          keyInput.x = 1;
           displayCapsule.rotation.y = (3 * Math.PI) / 2;
+          characterMoving = true;
+        } else if (key === "a" || key === "ArrowRight") {
+          keyInput.x = 1;
+          displayCapsule.rotation.y = (1 * Math.PI) / 2;
+          characterMoving = true;
         } else if (key === " ") {
           wantJump = true;
         }
@@ -201,14 +210,29 @@ export async function createCharacterController(scene: Scene): Promise<{ display
       case KeyboardEventTypes.KEYUP:
         if (key === "w" || key === "s" || key === "ArrowUp" || key === "ArrowDown") {
           keyInput.z = 0;
+          characterMoving = false;
         }
         if (key === "a" || key === "d" || key === "ArrowLeft" || key === "ArrowRight") {
           keyInput.x = 0;
+          characterMoving = false;
         }
         if (key === " ") {
           wantJump = false;
         }
         break;
+    }
+    if(KeyboardEventTypes.KEYDOWN && characterMoving)
+    {
+      if (!getAnimating()) {
+        walk();
+        toggleAnimating(); 
+      }
+    }
+    else{
+      if (getAnimating()) {
+        idle();
+        toggleAnimating();
+      }
     }
     console.log(keyInput);
   });

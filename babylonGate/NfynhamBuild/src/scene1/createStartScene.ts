@@ -58,6 +58,7 @@ import {
       camTarget,
       scene,
     );
+
     camera.attachControl(true);
     return camera;
   }

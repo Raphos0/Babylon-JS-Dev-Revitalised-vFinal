@@ -51,6 +51,7 @@ function createGround(scene: Scene) {
   );
 
   ground.material = groundMaterial;
+  
   return ground;
 }
 
