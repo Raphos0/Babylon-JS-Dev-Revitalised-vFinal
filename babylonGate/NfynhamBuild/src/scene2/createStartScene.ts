@@ -18,6 +18,7 @@ import {
     SceneLoader,
     AbstractMesh,
     ISceneLoaderAsyncResult,
+    PhysicsCharacterController,
     PhysicsAggregate,
     PhysicsShapeType,
     Light,
@@ -111,47 +112,56 @@ import {
     return camera;
   }
 
-  function createRedMan(scene: Scene, posx: number, posy: number, posz: number, roty:number) {
-    let item: Promise<void | ISceneLoaderAsyncResult> =
-    SceneLoader.ImportMeshAsync(
+  async function createRedMan(scene: Scene, posx: number, posy: number, posz: number, roty:number): Promise<PhysicsAggregate> {
+    const result = await SceneLoader.ImportMeshAsync(
       "",
       "./assets/hunter/",
       "RedManBabylonJS.gltf",
       scene
     );
 
-  item.then((result) => {
-    let redMan: AbstractMesh = result!.meshes[0];
+    let compiledMesh : AbstractMesh[] = [];
+    result.meshes.forEach((mesh: any) => {
+      if (mesh instanceof AbstractMesh && mesh.geometry) // seeks meshes in children of the object which have geometry, to find the actual model
+      {
+        compiledMesh.push(mesh); 
+      }
+    });
+    let redMan: AbstractMesh = compiledMesh[0]; // a bit meta, but as I know this model only has one mesh with geometry, I only use the first mesh
+
     redMan.position = new Vector3(posx, posy, posz); // Sets position as defined
     redMan.scaling = new Vector3(1, 1, 1); // Sets scale to 1
     redMan.rotation = new Vector3(0, roty+Math.PI, 0); // Only sets Y rotation to horizontally rotate the object to the defined angle
 
-    let redManAggregate = new PhysicsAggregate(redMan, PhysicsShapeType.MESH, {mass: 0}, scene);
-    redManAggregate.body.setCollisionCallbackEnabled(true);
-  });
-    return item;
+    const redManAggregate = new PhysicsAggregate(redMan, PhysicsShapeType.MESH, {mass: 0.5, restitution:0.1, friction:0.4}, scene); // Assigns the value for the physics aggregate (0 mass to make it static)
+    redManAggregate.body.setCollisionCallbackEnabled(true); // Enables collision callbacks for collision.ts
+    return redManAggregate;
   }
 
-  function createRedMen(scene: Scene){
-    createRedMan(scene, -20.29, -0.51, 2.45, Math.PI*0.38);
-    createRedMan(scene, -20.4, -0.51, -2, Math.PI*0.75);
-    createRedMan(scene, -13.92, 1.48, -14.6, Math.PI*0.9);
-    createRedMan(scene, -52.14, 6.7, -21.04, Math.PI*1.5);
-    createRedMan(scene, -44.39, 6.7, -32.56, Math.PI*0.95);
-    createRedMan(scene, -33.81, 6.7, -28.92, Math.PI*0.77);
-    createRedMan(scene, -40.55, 6.7, -58.99, Math.PI*0.83);
-    createRedMan(scene, -38.47, 6.7, -81.21, Math.PI*1.3);
-    createRedMan(scene, -33.68, 6.7, -91.22, Math.PI*0.9);
-    createRedMan(scene, -27.6, 6.7, -116.43, Math.PI*1.18);
-    createRedMan(scene, -10.16, 5.93, -116.33, Math.PI*0.59);
-    createRedMan(scene, -8.44, 5.68, -121.26, Math.PI*1.22);
-    createRedMan(scene, 3, 3.85, -115.1, Math.PI*0.37);
-    createRedMan(scene, -10.55, 3.77, -78.19, Math.PI*0.76);
-    createRedMan(scene, 11.9, 2.52, -75.1, Math.PI*0.25);
-    createRedMan(scene, 10.55, 2.52, -89.6, Math.PI*0.76);
-    createRedMan(scene, 21, 2.52, -116.4, Math.PI*0.77);
-    createRedMan(scene, 37.5, 2.52, -89, Math.PI*0.72);
-    createRedMan(scene, 51.3, 2.52, -82.5, Math.PI*0.59);
+  async function createRedMen(scene: Scene): Promise<PhysicsAggregate[]> {
+    let redMenList: PhysicsAggregate[] = [];
+
+    redMenList.push(await createRedMan(scene, 20.29, -0.51, 2.45, -Math.PI*0.38));
+    redMenList.push(await createRedMan(scene, 20.4, -0.51, -2, -Math.PI*0.75));
+    redMenList.push(await createRedMan(scene, 13.92, 1.48, -14.6, -Math.PI*0.9));
+    redMenList.push(await createRedMan(scene, 52.14, 6.7, -21.04, -Math.PI*1.5));
+    redMenList.push(await createRedMan(scene, 44.39, 6.7, -32.56, -Math.PI*0.95));
+    redMenList.push(await createRedMan(scene, 33.81, 6.7, -28.92, -Math.PI*0.77));
+    redMenList.push(await createRedMan(scene, 40.55, 6.7, -58.99, -Math.PI*0.83));
+    redMenList.push(await createRedMan(scene, 38.47, 6.7, -81.21, -Math.PI*1.3));
+    redMenList.push(await createRedMan(scene, 33.68, 6.7, -91.22, -Math.PI*0.9));
+    redMenList.push(await createRedMan(scene, 27.6, 6.7, -116.43, -Math.PI*1.18));
+    redMenList.push(await createRedMan(scene, 10.16, 5.93, -116.33, -Math.PI*0.59));
+    redMenList.push(await createRedMan(scene, 8.44, 5.68, -121.26, -Math.PI*1.22));
+    redMenList.push(await createRedMan(scene, -3, 3.85, -115.1, -Math.PI*0.37));
+    redMenList.push(await createRedMan(scene, 10.55, 3.77, -78.19, -Math.PI*0.76));
+    redMenList.push(await createRedMan(scene, -11.9, 2.52, -75.1, -Math.PI*0.25));
+    redMenList.push(await createRedMan(scene, -10.55, 2.52, -89.6, -Math.PI*0.76));
+    redMenList.push(await createRedMan(scene, -21, 2.52, -116.4, -Math.PI*0.77));
+    redMenList.push(await createRedMan(scene, -37.5, 2.52, -89, -Math.PI*0.72));
+    redMenList.push(await createRedMan(scene, -51.3, 2.52, -82.5, -Math.PI*0.59));
+
+    return redMenList;
   }
 
   function createGround(scene: Scene) {
@@ -220,7 +230,8 @@ import {
     light?: HemisphericLight;
     sky?: Mesh
     camera?: Camera;
-    redmen?: AbstractMesh[];
+    player?: PhysicsCharacterController;
+    redmen?: PhysicsAggregate[];
   }
 
   let that: SceneData = { scene: new Scene(engine) };
@@ -241,14 +252,15 @@ import {
   that.sky = createSky(that.scene);
   that.camera = createArcRotateCamera(that.scene);
   createLampLights(that.scene);
-  that.redmen = createRedMen(that.scene);
+  that.redmen = await createRedMen(that.scene);
 
   // creates a player reference for the camera to follow
-  const player = await createCharacterController(that.scene);
+  let playerRef = await createCharacterController(that.scene);
+  that.player = playerRef.characterController; // creates a reference of the player's character controller in the scene data for collision.ts
 
   // updates camera target every frame to follow player position
   that.scene.onBeforeRenderObservable.add(() => {
-    (that.camera as any).setTarget(player.displayCapsule.position);  // sets camera target to player position
+    (that.camera as any).setTarget(playerRef.displayCapsule.position);  // sets camera target to player position
   });
 
   const assetsManager = importAssets(that.scene);

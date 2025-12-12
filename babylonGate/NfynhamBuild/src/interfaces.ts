@@ -18,6 +18,7 @@ import {
     Light,
     PointLight,
     ShadowGenerator,
+    ISceneLoaderAsyncResult,
     StandardMaterial,
     Color3,
     Texture,
@@ -31,6 +32,8 @@ export interface SceneData {
     ground?: PhysicsAggregate;
     camera?: Camera;
     sky?: Mesh;
+    player?: PhysicsCharacterController;
+    redmen: PhysicsAggregate[]
     box1?:PhysicsAggregate;
     box2?:PhysicsAggregate;
 }

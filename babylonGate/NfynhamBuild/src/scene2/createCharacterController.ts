@@ -221,7 +221,7 @@ export async function createCharacterController(scene: Scene): Promise<{ display
         }
         break;
     }
-    //if(KeyboardEventTypes.KEYDOWN && characterMoving)
+    //if(KeyboardEventTypes.KEYDOWN && characterMoving) // Animations are not implemented as the model's skeleton is not compatible
     //{
     //  if (!getAnimating()) {
     //    walk();
@@ -234,7 +234,6 @@ export async function createCharacterController(scene: Scene): Promise<{ display
     //    toggleAnimating();
     //  }
     //}
-    console.log(keyInput);
   });
 
   return { displayCapsule, characterController };

@@ -24,14 +24,13 @@ let gui1 = menuScene1(eng);
 let gui2 = menuScene2(eng);
 scenes[0] = createScene1(eng);
 scenes[1] = await createScene2(eng);
-console.log("Scene 2: ", scenes[1].scene);
 scene = scenes[0].scene;
 setSceneIndex(0);
 
 export default async function setSceneIndex(i: number) {
   if(i == 1)
   {
-    createCharacterController(scenes[i].scene);
+    //createCharacterController(scenes[i].scene);
     setupCollisions(scenes[i]);
   }
   

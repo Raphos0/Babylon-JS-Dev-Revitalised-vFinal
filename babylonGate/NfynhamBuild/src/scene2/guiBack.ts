@@ -11,6 +11,7 @@ import {
   import * as GUI from "@babylonjs/gui";
  
 var text1!: GUI.TextBlock; // recieves external messages
+var killsCount = 0; // tracks kills for display
 
   //----------------------------------------------------
   function createSceneButton(scene: Scene, name: string, note: string, index: number, x: string, y: string, advtex: GUI.AdvancedDynamicTexture) {
@@ -76,7 +77,8 @@ var text1!: GUI.TextBlock; // recieves external messages
   );
   camera.attachControl(false);
   return camera;
-}
+  }
+  
   export default function menuScene(engine: Engine) {
     interface SceneData {
       scene: Scene;
@@ -108,8 +110,4 @@ var text1!: GUI.TextBlock; // recieves external messages
     
     return that;
   } 
-
-  export function setText(newtext: string) {
-        text1.text = newtext;
-  }
   
