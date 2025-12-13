@@ -40,7 +40,7 @@ import {
       myMaterial.specularColor = specular;
       myMaterial.emissiveColor = emissive;
       myMaterial.ambientColor = ambient;
-      myMaterial.ambientTexture = new Texture("src/grass.jpg", scene);
+      myMaterial.ambientTexture = new Texture("./assets/grass.jpg", scene);
 
       return myMaterial;
     }
