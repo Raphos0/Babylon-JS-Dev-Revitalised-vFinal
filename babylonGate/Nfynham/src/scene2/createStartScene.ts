@@ -108,6 +108,11 @@ import {
       camTarget,
       scene,
     );
+    camera.lowerRadiusLimit = 5;
+    camera.upperRadiusLimit = 40;
+    camera.lowerBetaLimit = 0;
+    camera.upperBetaLimit = Math.PI / 2.02;
+
     camera.attachControl(true);
     return camera;
   }
@@ -133,7 +138,7 @@ import {
     redMan.scaling = new Vector3(1, 1, 1); // Sets scale to 1
     redMan.rotation = new Vector3(0, roty+Math.PI, 0); // Only sets Y rotation to horizontally rotate the object to the defined angle
 
-    const redManAggregate = new PhysicsAggregate(redMan, PhysicsShapeType.MESH, {mass: 0.5, restitution:0.1, friction:0.4}, scene); // Assigns the value for the physics aggregate (0 mass to make it static)
+    const redManAggregate = new PhysicsAggregate(redMan, PhysicsShapeType.MESH, {mass: 0.4, restitution:0.1, friction:0.4}, scene); // Assigns the value for the physics aggregate (0 mass to make it static)
     redManAggregate.body.setCollisionCallbackEnabled(true); // Enables collision callbacks for collision.ts
     return redManAggregate;
   }
@@ -141,25 +146,25 @@ import {
   async function createRedMen(scene: Scene): Promise<PhysicsAggregate[]> {
     let redMenList: PhysicsAggregate[] = [];
 
-    redMenList.push(await createRedMan(scene, 20.29, -0.515, 2.45, -Math.PI*0.38));
-    redMenList.push(await createRedMan(scene, 20.4, -0.515, -2, -Math.PI*0.75));
-    redMenList.push(await createRedMan(scene, 13.92, 1.485, -14.6, -Math.PI*0.9));
-    redMenList.push(await createRedMan(scene, 52.14, 6.8, -21.04, -Math.PI*1.5));
-    redMenList.push(await createRedMan(scene, 44.39, 6.8, -32.56, -Math.PI*0.95));
-    redMenList.push(await createRedMan(scene, 33.81, 6.8, -28.92, -Math.PI*0.77));
-    redMenList.push(await createRedMan(scene, 40.55, 6.8, -58.99, -Math.PI*0.83));
-    redMenList.push(await createRedMan(scene, 38.47, 6.8, -81.21, -Math.PI*1.3));
-    redMenList.push(await createRedMan(scene, 33.68, 6.8, -91.22, -Math.PI*0.9));
-    redMenList.push(await createRedMan(scene, 27.6, 6.8, -116.43, -Math.PI*1.18));
-    redMenList.push(await createRedMan(scene, 10.16, 5.93, -116.33, -Math.PI*0.59));
-    redMenList.push(await createRedMan(scene, 8.44, 5.68, -121.26, -Math.PI*1.22));
-    redMenList.push(await createRedMan(scene, -3, 3.85, -115.1, -Math.PI*0.37));
-    redMenList.push(await createRedMan(scene, 10.55, 3.77, -78.19, -Math.PI*0.76));
-    redMenList.push(await createRedMan(scene, -11.9, 2.52, -75.1, -Math.PI*0.25));
-    redMenList.push(await createRedMan(scene, -10.55, 2.52, -89.6, -Math.PI*0.76));
-    redMenList.push(await createRedMan(scene, -21, 2.52, -116.4, -Math.PI*0.77));
-    redMenList.push(await createRedMan(scene, -37.5, 2.52, -89, -Math.PI*0.72));
-    redMenList.push(await createRedMan(scene, -51.3, 2.52, -82.5, -Math.PI*0.59));
+    redMenList.push(await createRedMan(scene, 20.29, 0, 2.45, -Math.PI*0.38));
+    redMenList.push(await createRedMan(scene, 20.4, 0, -2, -Math.PI*0.75));
+    redMenList.push(await createRedMan(scene, 13.92, 2, -14.6, -Math.PI*0.9));
+    redMenList.push(await createRedMan(scene, 52.14, 7, -21.04, -Math.PI*1.5));
+    redMenList.push(await createRedMan(scene, 44.39, 7, -32.56, -Math.PI*0.95));
+    redMenList.push(await createRedMan(scene, 33.81, 7, -28.92, -Math.PI*0.77));
+    redMenList.push(await createRedMan(scene, 40.55, 7, -58.99, -Math.PI*0.83));
+    redMenList.push(await createRedMan(scene, 38.47, 7, -81.21, -Math.PI*1.3));
+    redMenList.push(await createRedMan(scene, 33.68, 7, -91.22, -Math.PI*0.9));
+    redMenList.push(await createRedMan(scene, 27.6, 7, -116.43, -Math.PI*1.18));
+    redMenList.push(await createRedMan(scene, 10.16, 6, -116.33, -Math.PI*0.59));
+    redMenList.push(await createRedMan(scene, 8.44, 6, -121.26, -Math.PI*1.22));
+    redMenList.push(await createRedMan(scene, -3, 5, -115.1, -Math.PI*0.37));
+    redMenList.push(await createRedMan(scene, 10.55, 4, -78.19, -Math.PI*0.76));
+    redMenList.push(await createRedMan(scene, -11.9, 3.5, -75.1, -Math.PI*0.25));
+    redMenList.push(await createRedMan(scene, -10.55, 3.5, -89.6, -Math.PI*0.76));
+    redMenList.push(await createRedMan(scene, -21, 3.5, -116.4, -Math.PI*0.77));
+    redMenList.push(await createRedMan(scene, -37.5, 3.5, -89, -Math.PI*0.72));
+    redMenList.push(await createRedMan(scene, -51.3, 3.5, -82.5, -Math.PI*0.59));
 
     return redMenList;
   }

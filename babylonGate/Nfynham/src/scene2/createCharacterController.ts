@@ -40,7 +40,7 @@ export async function createCharacterController(scene: Scene): Promise<{ display
     { height: h, radius: r },
     scene
   );
-  displayCapsule.position = new Vector3(0, h / 2, 0);
+  displayCapsule.position = new Vector3(-2, h/2, 0);  //gives slight offset to avoid initial collision
 
   // make the capsule invisible so player model can be seen, will work as a collider
   displayCapsule.isVisible = false;
@@ -63,7 +63,7 @@ export async function createCharacterController(scene: Scene): Promise<{ display
 
   player.then((result) => {
     let hunter: AbstractMesh = result!.meshes[0];
-    hunter.position = Vector3.Zero(); // Sets position to 0
+    hunter.position = new Vector3(-2,0,0); // Matches initial capsule position offset
     hunter.scaling = new Vector3(1, 1, 1); // Sets scale to 1
     hunter.rotation = Vector3.Zero(); // Resets rotation
 

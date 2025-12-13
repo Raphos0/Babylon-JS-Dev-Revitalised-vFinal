@@ -98,9 +98,9 @@ function createBox1(scene: Scene) {
   box.position.y = 4;
   box.position.z = 1;
 
-  var texture = new StandardMaterial("reflective", scene);
+  var texture = new StandardMaterial("flame", scene);
   texture.ambientTexture = new Texture(
-    "./assets/textures/reflectivity.png",
+    "./assets/textures/fire.png",
     scene
   );
   texture.diffuseColor = new Color3(1, 1, 1);
@@ -114,9 +114,9 @@ function createBox2(scene: Scene) {
   box.position.y = 8;
   box.position.z = 1;
 
-  var texture = new StandardMaterial("reflective", scene);
+  var texture = new StandardMaterial("flame", scene);
   texture.ambientTexture = new Texture(
-    "./assets/textures/reflectivity.png",
+    "./assets/textures/fire.png",
     scene
   );
   texture.diffuseColor = new Color3(1, 1, 1);

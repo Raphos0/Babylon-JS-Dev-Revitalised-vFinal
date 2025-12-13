@@ -119,6 +119,12 @@ function createGround(scene: Scene) {
       camTarget,
       scene,
     );
+
+    camera.lowerRadiusLimit = 9;
+    camera.upperRadiusLimit = 25;
+    camera.lowerBetaLimit = 0;
+    camera.upperBetaLimit = Math.PI / 2.02;
+
     camera.attachControl(true);
     return camera;
   }
@@ -203,6 +209,18 @@ function createGround(scene: Scene) {
       "./assets/nature/",
       "Clover_2.gltf"
     );
+    const clover3 = assetsManager.addMeshTask(
+      "clover3 task",
+      "",
+      "./assets/nature/",
+      "Clover_1.gltf"
+    );
+    const clover4 = assetsManager.addMeshTask(
+      "clover4 task",
+      "",
+      "./assets/nature/",
+      "Clover_2.gltf"
+    );
     tree1.onSuccess = function(task){
       task.loadedMeshes[0].position = new Vector3(-3,0,2);
       task.loadedMeshes[0].scaling = new Vector3(0.2,0.2,0.2);
@@ -236,6 +254,19 @@ function createGround(scene: Scene) {
     rock1.onSuccess = function(task){
       task.loadedMeshes[0].position = new Vector3(5,0,5);
       task.loadedMeshes[0].scaling = new Vector3(0.5,0.5,0.5);
+
+      const rock1Clone1 = task.loadedMeshes[0].clone("rock1Clone1", null);
+      rock1Clone1!.position = new Vector3(-4.6,0,-5.3);
+      rock1Clone1!.scaling = new Vector3(0.5,0.5,0.5);
+      rock1Clone1!.rotation = new Vector3(0,-Math.PI/2,0);
+      const rock1Clone2 = task.loadedMeshes[0].clone("rock1Clone2", null);
+      rock1Clone2!.position = new Vector3(5.1,0,-4.7);
+      rock1Clone2!.scaling = new Vector3(0.5,0.5,0.5);
+      rock1Clone2!.rotation = new Vector3(0,-Math.PI/4,0);
+      const rock1Clone3 = task.loadedMeshes[0].clone("rock1Clone4", null);
+      rock1Clone3!.position = new Vector3(-4.8,0,4.3);
+      rock1Clone3!.scaling = new Vector3(0.5,0.5,0.5);
+      rock1Clone3!.rotation = new Vector3(0,-Math.PI/6,0);
     }
     rockPath1.onSuccess = function(task){
       task.loadedMeshes[0].position = new Vector3(2,0,2);
@@ -324,6 +355,56 @@ function createGround(scene: Scene) {
       task.loadedMeshes[0].scaling = new Vector3(0.5,0.5,0.5);
 
       const clover2Clone1 = task.loadedMeshes[0].clone("clover2Clone1", null);
+      clover2Clone1!.position = new Vector3(1.3,0,1.3);
+      clover2Clone1!.scaling = new Vector3(0.5,0.5,0.5);
+      clover2Clone1!.rotation = new Vector3(0,Math.PI/6,0);
+
+      const clover2Clone2 = task.loadedMeshes[0].clone("clover2Clone2", null);
+      clover2Clone2!.position = new Vector3(0.7,0,0.7);
+      clover2Clone2!.scaling = new Vector3(0.5,0.5,0.5);
+      clover2Clone2!.rotation = new Vector3(0,Math.PI/5,0);
+
+      const clover2Clone3 = task.loadedMeshes[0].clone("clover2Clone3", null);
+      clover2Clone3!.position = new Vector3(0.7,0,1.3);
+      clover2Clone3!.scaling = new Vector3(0.5,0.5,0.5);
+      clover2Clone3!.rotation = new Vector3(0,Math.PI/2,0);
+
+      const clover2Clone4 = task.loadedMeshes[0].clone("clover2Clone4", null);
+      clover2Clone4!.position = new Vector3(1.3,0,0.7);
+      clover2Clone4!.scaling = new Vector3(0.5,0.5,0.5);
+      clover2Clone4!.rotation = new Vector3(0,Math.PI/3,0);
+
+    }
+    clover3.onSuccess = function(task){
+      task.loadedMeshes[0].position = new Vector3(-1,0,-1);
+      task.loadedMeshes[0].scaling = new Vector3(0.5,0.5,0.5);
+
+      const clover2Clone1 = task.loadedMeshes[0].clone("clover2Clone1", null);
+      clover2Clone1!.position = new Vector3(-1.3,0,-1.3);
+      clover2Clone1!.scaling = new Vector3(0.5,0.5,0.5);
+      clover2Clone1!.rotation = new Vector3(0,Math.PI/6,0);
+
+      const clover2Clone2 = task.loadedMeshes[0].clone("clover2Clone2", null);
+      clover2Clone2!.position = new Vector3(-0.7,0,-0.7);
+      clover2Clone2!.scaling = new Vector3(0.5,0.5,0.5);
+      clover2Clone2!.rotation = new Vector3(0,Math.PI/5,0);
+
+      const clover2Clone3 = task.loadedMeshes[0].clone("clover2Clone3", null);
+      clover2Clone3!.position = new Vector3(-0.7,0,-1.3);
+      clover2Clone3!.scaling = new Vector3(0.5,0.5,0.5);
+      clover2Clone3!.rotation = new Vector3(0,Math.PI/2,0);
+
+      const clover2Clone4 = task.loadedMeshes[0].clone("clover2Clone4", null);
+      clover2Clone4!.position = new Vector3(-1.3,0,-0.7);
+      clover2Clone4!.scaling = new Vector3(0.5,0.5,0.5);
+      clover2Clone4!.rotation = new Vector3(0,Math.PI/3,0);
+
+    }
+    clover4.onSuccess = function(task){
+      task.loadedMeshes[0].position = new Vector3(1,0,1);
+      task.loadedMeshes[0].scaling = new Vector3(0.5,0.5,0.5);
+
+      const clover2Clone1 = task.loadedMeshes[0].clone("clover2Clone1", null);
       clover2Clone1!.position = new Vector3(1.3,0,-1.3);
       clover2Clone1!.scaling = new Vector3(0.5,0.5,0.5);
       clover2Clone1!.rotation = new Vector3(0,Math.PI/6,0);
@@ -343,27 +424,6 @@ function createGround(scene: Scene) {
       clover2Clone4!.scaling = new Vector3(0.5,0.5,0.5);
       clover2Clone4!.rotation = new Vector3(0,Math.PI/3,0);
 
-    }
-
-    // ========================= HUNTER ASSET =========================
-
-    // Optional: explicit fetch check (logs HTTP status / content-type)
-    fetch("./assets/hunter/HunterRig2.gltf").then(res => {
-      console.log("HunterRig2.gltf fetch check:", res.status, res.headers.get("content-type"));
-    }).catch(err => {
-      console.error("HunterRig2.gltf fetch error:", err);
-    });
-
-    const hunter = assetsManager.addMeshTask(
-      "hunter task",
-      "",
-      "./assets/hunter/",
-      "HunterBabylonJS.gltf"
-    );
-    hunter.onSuccess = function (task) {
-      task.loadedMeshes[0].position = new Vector3(6, 0, -6);
-      task.loadedMeshes[0].scaling = new Vector3(1, 1, 1);
-      task.loadedMeshes[0].rotation = new Vector3(0, -Math.PI/2, 0);
     }
 
     assetsManager.onTaskErrorObservable.add(function (task){
