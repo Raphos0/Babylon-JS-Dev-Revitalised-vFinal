@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Dark Forge Games: About</title>
+        
+        <link 
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" 
+        rel="stylesheet" 
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" 
+        crossorigin="anonymous">
+
+        <script 
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" 
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" 
+        crossorigin="anonymous">
+        </script>
+        
+        <style>
+            @font-face{
+                font-family: 'fleshandblood';
+                src: url('assets/fonts/Fleshandblood-MVA5x.ttf');
+            }
+            @font-face{
+                font-family: 'timesnewroman';
+                src: url('assets/fonts/Times\ New\ Roman.ttf');
+            }
+            .dfg-title{
+                text-align: center; 
+                font-size: 180%; 
+                font-family:'fleshandblood'; 
+                color:darkslateblue
+            }
+            .nav-text-std{
+                color: rgb(156, 144, 234); 
+                padding:15px
+            }
+            .nav-text-active{
+                color: rgb(95, 88, 142); 
+                font-weight: bold;
+                padding:15px
+            }
+            .std-para{
+            font-family: 'timesnewroman';
+            font-size: 120%;
+            }
+            .std-head{
+            font-family: 'timesnewroman';
+            font-size: 200%;
+            }
+        </style>
+    </head>
+    <body>
+        <nav class="navbar fixed-top navbar-expand-lg" style="background: rgb(40, 35, 67);">
+            <div class="container-fluid">
+                <a class="navbar-brand dfg-title" href="#">
+                    <img src="assets/DarkForgeGames.png" alt="" width="50" height="55" class="d-inline-block align-text-middle">
+                    Dark Forge Games
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <img src="assets/options.png" alt="" width="35" height="35">
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                        <a class="nav-link nav-text-std" href="index.html">HOME</a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link nav-text-active" aria-current="page" href="about.html">ABOUT</a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link nav-text-std" href="scenes.html">SCENES</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <header>
+            <br><br><br>
+        </header>
+        
+        <section style="background-color:rgb(144, 137, 189); background-size:cover; background-position: top; padding:85px;">
+            <h2 style="text-align: center; font-size: 300%; font-family: 'timesnewroman'; color: rgb(91, 80, 160); margin:auto; width:75%">About Me</h2>
+            <p style="text-align: center; font-size: 130%; font-family: 'timesnewroman'; margin:auto; width:70%">
+                I'm David Kazanowski of Dark Forge Games, a University student studying at the University of the West of Scotland under Games Development in 3rd Year. 
+                I specialise in game programming, however I also have experience in 3D Modelling in Blender...
+            </p>
+        </section>
+
+        <br><br>
+
+        <section>
+            <h2 style="text-align: center; font-size: 225%; font-family: 'timesnewroman';">Here are some of my previous projects:</h2>
+            <br>
+            <div style="margin:auto; width: 75%;">
+                <div id="carouselExampleIndicators" class="carousel slide">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
+                </div>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="assets/Carousel/GearsOfBlood.png" class="d-block w-100" alt="Gears of Blood">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h2 class="std-head">Gears of Blood</h2>
+                            <p class="std-para">
+                                A game where you awake as a puppet, designed to hunt beasts in place of human hunters by the Father of all Puppets.
+                                Gears of Blood is a level-based, 3rd person hack and slash game where you venture through a series of areas in the city of Nfynham, 
+                                fighting your path through killing hordes of enemies, until you face off the boss that awaits at the end of the area.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="assets/Carousel/SanctumArcana.png" class="d-block w-100" alt="Sanctum Arcana">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h2 class="std-head">Sanctum Arcana</h2>
+                            <p class="std-para">
+                                 A 3D first person shooter, wave defence game, where you and friends play as wizards tasked with defending the last and greatest 
+                                 of the Aether Trees, the Starbloom. Every wizard has now come to defend the Starbloom and ensure it does not fall to the hand 
+                                 of enemy forces.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="assets/Carousel/Tenement49.png" class="d-block w-100" alt="Tenement 49">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h2 class="std-head">Tenement 49</h2>
+                            <p class="std-para">
+                                A tense puzzle game where you, the detective, must discover the mystery behind your brother, who went missing as he was 
+                                working on his latest invention. Set in an Alternate Victorian Era London, you arrive at the entrance of the tenement, 
+                                tasked with exploring every nook and cranny to solve a variety of puzzles.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="assets/Carousel/UntitledGladiatorGame.jpg" class="d-block w-100" alt="Untitled Gladiator Game">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h2 class="std-head">Untitled Gladiator Game</h2>
+                            <p class="std-para">
+                                An action RPG where you play as a gladiator, favoured by the gods themselves, fighting their way through gauntlets of enemies to 
+                                become the grand champion and regain their freedom. In the arena, you will face 4 waves of enemies, scavenging their weapons to 
+                                use against them until you fight the champion of the gauntlet, increasing your rank upon victory.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <br>
+        
+        <footer style ="background-color: rgb(40, 35, 67); text-align: center; color: white;">
+            <section style="padding:20px;">
+                <p>para</p>
+            </section>
+        </footer>
+    </body>
+</html>
