@@ -1,5 +1,5 @@
 import "@babylonjs/loaders/glTF/2.0";
-import { SceneLoader, TransformNode, Mesh, AbstractMesh } from "@babylonjs/core";
+import { SceneLoader, TransformNode, Mesh, AbstractMesh, ArcRotateCamera } from "@babylonjs/core";
 
 import {
   Scene,
@@ -11,12 +11,13 @@ import {
   CharacterSupportedState,
   ISceneLoaderAsyncResult,
   KeyboardEventTypes,
+  Camera,
   StandardMaterial,
   Color3,
 } from "@babylonjs/core";
 import { bakedAnimations, walk, run, left, right, idle, stopAnimation, getAnimating, toggleAnimating } from "./bakedAnimations";
 
-export async function createCharacterController(scene: Scene): Promise<{ displayCapsule: Mesh; characterController: PhysicsCharacterController }> {
+export async function createCharacterController(scene: Scene, camera : Camera): Promise<{ displayCapsule: Mesh; characterController: PhysicsCharacterController }> {
   // Character state machine
   let characterState = "ON_GROUND";
   const inAirSpeed = 8.0;
@@ -170,6 +171,13 @@ export async function createCharacterController(scene: Scene): Promise<{ display
     let down = new Vector3(0, -1, 0);
     let support = characterController.checkSupport(dt, down);
 
+    // Updates the display capsule's forward vector to match character orientation
+    characterOrientation = camera.absoluteRotation || Quaternion.Identity(); // Sets the character orientation to match the camera, or identity if undefined
+    displayCapsule.setDirection(forwardLocalSpace.applyRotationQuaternion(characterOrientation)); 
+    
+    // Handles rotation of capsule
+    displayCapsule.rotation.x = 0; // Prevents capsule from tilting up/down
+
     let desiredLinearVelocity = getDesiredVelocity(
       dt,
       support,
@@ -186,21 +194,17 @@ export async function createCharacterController(scene: Scene): Promise<{ display
 
     switch (kbInfo.type) {
       case KeyboardEventTypes.KEYDOWN:
-        if (key === "s" || key === "ArrowUp") {
+        if (key === "w" || key === "ArrowUp") {
           keyInput.z = 1;
-          displayCapsule.rotation.y = (0 * Math.PI) / 2;
           characterMoving = true;
-        } else if (key === "w" || key === "ArrowDown") {
+        } else if (key === "s" || key === "ArrowDown") {
           keyInput.z = -1;
-          displayCapsule.rotation.y = (2 * Math.PI) / 2;
           characterMoving = true;
-        } else if (key === "d" || key === "ArrowLeft") {
+        } else if (key === "a" || key === "ArrowLeft") {
           keyInput.x = -1;
-          displayCapsule.rotation.y = (3 * Math.PI) / 2;
           characterMoving = true;
-        } else if (key === "a" || key === "ArrowRight") {
+        } else if (key === "d" || key === "ArrowRight") {
           keyInput.x = 1;
-          displayCapsule.rotation.y = (1 * Math.PI) / 2;
           characterMoving = true;
         } else if (key === " ") {
           wantJump = true;

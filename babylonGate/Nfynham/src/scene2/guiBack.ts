@@ -63,12 +63,6 @@ import {
     advancedTexture.addControl(button1);
     var camera = createArcRotateCamera(scene);
 
-    //const textBlock = new GUI.Rectangle();
-    //  textBlock.background = "#76d56e88";
-    //  textBlock.thickness = 0;
-    //  textBlock.addControl(text1);
-
- 
     let that: SceneData = {
       scene,
       advancedTexture,

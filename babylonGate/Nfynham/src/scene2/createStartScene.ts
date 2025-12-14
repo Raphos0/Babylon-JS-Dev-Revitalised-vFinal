@@ -210,7 +210,7 @@ import {
       mesh.isVisible = true;
       });
 
-      // Merge all submeshes into a single mesh to create physics aggregate on whole game map
+      // Assigns a physics aggregate for each mesh in gameMap
       task.loadedMeshes.forEach((mesh: any) => {
         if (mesh instanceof AbstractMesh && mesh.geometry) // checks if "mesh" is an Abstract Mesh (should include all types of complex meshes) and if "mesh" contains geometry
         {
@@ -260,7 +260,7 @@ import {
   that.redmen = await createRedMen(that.scene);
 
   // creates a player reference for the camera to follow
-  let playerRef = await createCharacterController(that.scene);
+  let playerRef = await createCharacterController(that.scene, that.camera as ArcRotateCamera);
   that.player = playerRef.characterController; // creates a reference of the player's character controller in the scene data for collision.ts
 
   // updates camera target every frame to follow player position
