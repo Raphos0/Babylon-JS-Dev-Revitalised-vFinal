@@ -9,9 +9,6 @@ import {
     Sound
   } from "@babylonjs/core";
   import * as GUI from "@babylonjs/gui";
- 
-var text1!: GUI.TextBlock; // recieves external messages
-var killsCount = 0; // tracks kills for display
 
   //----------------------------------------------------
   function createSceneButton(scene: Scene, name: string, note: string, index: number, x: string, y: string, advtex: GUI.AdvancedDynamicTexture) {
@@ -60,8 +57,10 @@ var killsCount = 0; // tracks kills for display
   
     let scene = new Scene(engine);
     let advancedTexture = GUI.AdvancedDynamicTexture.CreateFullscreenUI("myUI", true);
-    var button1 = createSceneButton(scene,"but1", "Back", 1,"-1100px", "-550px", advancedTexture);
-    advancedTexture.addControl(text1);
+    var button1 = createSceneButton(scene,"but1", "Back", 1,"100px", "80px", advancedTexture);
+    button1.verticalAlignment = GUI.Control.VERTICAL_ALIGNMENT_TOP;
+    button1.horizontalAlignment = GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+    advancedTexture.addControl(button1);
     var camera = createArcRotateCamera(scene);
 
     //const textBlock = new GUI.Rectangle();
